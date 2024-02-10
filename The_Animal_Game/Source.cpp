@@ -3,6 +3,8 @@
 using namespace TheAnimalGame;
 using namespace std;
 
+
+
 int main()
 {
 	/*system( "chcp 1251" );     //Оставил на всякий случай.
@@ -17,20 +19,22 @@ int main()
 	string no = "нет";
 	string answer;
 	int inner_key;
-	largest_key = 1;
 
-	loadFromFile( data );
+	TProcessor start{};
+
+
+	start.loadFromFile( data );
 
 	if ( data.empty() )
 	{
 		data[0] = { "гончая собака", "собака" };
-		saveToFile( data );
-		loadFromFile( data );
+		start.saveToFile( data );
+		start.loadFromFile( data );
 	}
 
-	auto firstElement = prev( data.end() );
-	largest_key = firstElement->first;
-	inner_key = largest_key;
+	auto lastElement = prev( data.end() ); // получаем последний добавленный элемент.
+	start.last_key = lastElement->first;
+	inner_key = start.last_key;
 
 	cout << "Задумайте животное.\n";
 	cout << "\n";
@@ -41,7 +45,7 @@ int main()
 		{
 			auto it = find( exclusionAnimals.begin(), exclusionAnimals.end(), data[inner_key].question ); // проверка на уникальность типа животного.
 
-			if ( ( it == exclusionAnimals.end() ) || exclusionAnimals.empty() )
+			if ( (it == exclusionAnimals.end()) || exclusionAnimals.empty() )
 			{
 				if ( data.size() == 1 ) // стартовое условие.
 				{
@@ -55,11 +59,11 @@ int main()
 				cin >> answer;
 			}
 
-			addUnique( exclusionAnimals, data[inner_key].question );
+			start.addUnique( exclusionAnimals, data[inner_key].question );
 
-			if ( ( answer != no ) && ( answer != yes ) )
+			if ( (answer != no) && (answer != yes) )
 			{
-				cout << "Нужно ответить „да“ либо „нет“, попробуйте еще раз.\n";
+				cout << "Нужно ответить „да“ либо „нет“, попробуйте еще раз." << endl;
 				flagEndCycle = true;
 				break;
 			}
@@ -72,7 +76,7 @@ int main()
 				{
 					if ( data[inner_key].question == typeOfAnimal ) //условие для работы с подтипами.
 					{
-						addUnique( exclusionNamesOfAnimals, data[inner_key].name );
+						start.addUnique( exclusionNamesOfAnimals, data[inner_key].name );
 
 						if ( data.size() != 1 ) //стартовое условие.
 						{
@@ -101,8 +105,8 @@ int main()
 
 					cout << "\n";
 					cout << "Формат ввода текста:  имя_животного это вид_животного? \n";
-					auto nameType = createNewEntry();
-					addNewEntry( data, nameType.first, nameType.second );
+					auto nameType = start.createNewEntry();
+					start.addNewEntry( data, nameType.first, nameType.second );
 					flagEndCycle = true;
 					cout << "Спасибо, теперь я знаю что вы загадали!\n";
 					break;
@@ -125,8 +129,8 @@ int main()
 
 				cout << "\n";
 				cout << "Формат ввода текста: „имя_животного это вид_животного?“\n";
-				auto nameType = createNewEntry();
-				addNewEntry( data, nameType.first, nameType.second );
+				auto nameType = start.createNewEntry();
+				start.addNewEntry( data, nameType.first, nameType.second );
 				flagEndCycle = true;
 				cout << "Спасибо, теперь я знаю что вы загадали!\n";
 				break;

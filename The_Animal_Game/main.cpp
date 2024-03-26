@@ -1,14 +1,9 @@
-﻿#include "TProcessor.cpp"
-#include <iostream>
-using namespace TheAnimalGame;
-using namespace std;
-
-
+﻿#include "Processor.h"
 
 int main()
 {
-	/*system( "chcp 1251" );     //Оставил на всякий случай.
-	setlocale( LC_ALL, "" );*/
+	system( "chcp 1251" );     //Оставил на всякий случай.
+	setlocale( LC_ALL, "" );
 
 	map<int, TAnimal> data;
 	bool flagEndCycle = false;
@@ -20,8 +15,7 @@ int main()
 	string answer;
 	int inner_key;
 
-	TProcessor start{};
-
+	TProcessor start {};
 
 	start.loadFromFile( data );
 
@@ -45,7 +39,7 @@ int main()
 		{
 			auto it = find( exclusionAnimals.begin(), exclusionAnimals.end(), data[inner_key].question ); // проверка на уникальность типа животного.
 
-			if ( (it == exclusionAnimals.end()) || exclusionAnimals.empty() )
+			if ( ( it == exclusionAnimals.end() ) || exclusionAnimals.empty() )
 			{
 				if ( data.size() == 1 ) // стартовое условие.
 				{
@@ -61,7 +55,7 @@ int main()
 
 			start.addUnique( exclusionAnimals, data[inner_key].question );
 
-			if ( (answer != no) && (answer != yes) )
+			if ( ( answer != no ) && ( answer != yes ) )
 			{
 				cout << "Нужно ответить „да“ либо „нет“, попробуйте еще раз." << endl;
 				flagEndCycle = true;
